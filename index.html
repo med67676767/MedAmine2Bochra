@@ -248,7 +248,8 @@ body{font-family:'Jost',sans-serif;cursor:none;display:flex;align-items:center;j
 #pwScreen{
   position:fixed;inset:0;z-index:99999;
   background:radial-gradient(ellipse at 50% 40%,rgba(20,10,45,.98),rgba(5,3,15,1));
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:20px;
+  overflow-y:auto;padding:40px 20px 60px;
 }
 .pw-lock{font-size:3.5rem;animation:lockPulse 2s ease-in-out infinite;}
 @keyframes lockPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.12) rotate(-5deg);}}
@@ -269,8 +270,9 @@ body{font-family:'Jost',sans-serif;cursor:none;display:flex;align-items:center;j
 .pw-key:hover{background:rgba(200,168,248,.18);box-shadow:0 0 20px rgba(200,168,248,.15);}
 .pw-key:active{transform:scale(.88);}
 .pw-key.del{font-size:1rem;color:var(--rose);}
-#pwError{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--rose);opacity:0;transition:opacity .3s;height:16px;}
-#pwError.show{opacity:1;}
+#pwError{display:none;}
+#pwDots{display:none;}
+#pwKeypad{display:none;}
 #pwScreen.hide{animation:pwFadeOut .7s ease forwards;}
 @keyframes pwFadeOut{to{opacity:0;transform:scale(1.05);pointer-events:none;}}
 
@@ -290,6 +292,44 @@ body{font-family:'Jost',sans-serif;cursor:none;display:flex;align-items:center;j
 }
 
 .wrap{padding-bottom:20px;}
+
+/* note on pw screen */
+.pw-note{
+  max-width:320px;text-align:center;
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-size:.95rem;color:rgba(240,232,255,.55);
+  line-height:1.85;letter-spacing:.01em;
+  border-top:1px solid rgba(200,168,248,.12);
+  padding-top:20px;margin-top:4px;
+}
+.pw-note em{color:var(--lavender);font-style:normal;}
+
+/* locked countdown */
+#pwCountdown{
+  display:flex;gap:14px;justify-content:center;margin:16px 0 4px;
+}
+.pw-cd-block{
+  text-align:center;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(200,168,248,.15);
+  border-radius:12px;padding:10px 12px;min-width:58px;
+}
+.pw-cd-num{
+  font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;
+  color:var(--gold);display:block;line-height:1;
+}
+.pw-cd-lbl{
+  font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(240,232,255,.3);margin-top:3px;display:block;
+}
+#pwUnlockMsg{
+  font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;
+  color:rgba(240,232,255,.3);margin-top:4px;
+}
+/* when locked hide keypad */
+.locked #pwKeypad,.locked #pwDots,.locked .pw-sub{ display:none !important; }
+.locked .pw-lock{ animation:lockPulse 2s ease-in-out infinite, lockedColor 2s ease-in-out infinite; }
+@keyframes lockedColor{0%,100%{filter:hue-rotate(0deg);}50%{filter:hue-rotate(40deg) brightness(1.3);}}
 </style>
 </head>
 <body>
@@ -303,30 +343,33 @@ body{font-family:'Jost',sans-serif;cursor:none;display:flex;align-items:center;j
 <div id="pwScreen">
   <div class="pw-lock">🔒</div>
   <div class="pw-title">This is for Bochra 🌸</div>
-  <div class="pw-sub">Enter the secret code</div>
-  <div id="pwDots">
-    <div class="pw-dot" id="d0"></div>
-    <div class="pw-dot" id="d1"></div>
-    <div class="pw-dot" id="d2"></div>
-    <div class="pw-dot" id="d3"></div>
-    <div class="pw-dot" id="d4"></div>
-    <div class="pw-dot" id="d5"></div>
+  <div class="pw-sub">Opens on 28 juin 2026 at 23:59 ✦</div>
+
+  <!-- Countdown -->
+  <div id="pwCountdown">
+    <div class="pw-cd-block"><span class="pw-cd-num" id="pw-d">00</span><span class="pw-cd-lbl">days</span></div>
+    <div class="pw-cd-block"><span class="pw-cd-num" id="pw-h">00</span><span class="pw-cd-lbl">hrs</span></div>
+    <div class="pw-cd-block"><span class="pw-cd-num" id="pw-m">00</span><span class="pw-cd-lbl">min</span></div>
+    <div class="pw-cd-block"><span class="pw-cd-num" id="pw-s">00</span><span class="pw-cd-lbl">sec</span></div>
   </div>
-  <div id="pwKeypad">
-    <div class="pw-key" data-n="1">1</div>
-    <div class="pw-key" data-n="2">2</div>
-    <div class="pw-key" data-n="3">3</div>
-    <div class="pw-key" data-n="4">4</div>
-    <div class="pw-key" data-n="5">5</div>
-    <div class="pw-key" data-n="6">6</div>
-    <div class="pw-key" data-n="7">7</div>
-    <div class="pw-key" data-n="8">8</div>
-    <div class="pw-key" data-n="9">9</div>
-    <div class="pw-key del" data-n="del">⌫</div>
-    <div class="pw-key" data-n="0">0</div>
-    <div class="pw-key del" data-n="clr" style="font-size:.7rem;color:rgba(240,232,255,.4);">CLR</div>
+  <div id="pwUnlockMsg">until the surprise opens for you 🌙</div>
+
+  <!-- Note — always visible -->
+  <div class="pw-note">
+    I built this website just for you.<br>
+    Every line of code, every color, every detail —<br>
+    I did it all by myself. No help.<br>
+    Just me, my screen, and <em>you in my mind.</em><br><br>
+    It was not easy. But when I think about<br>
+    who this is for, it becomes worth it.<br><br>
+    You are not like anyone else.<br>
+    You have a place in my heart<br>
+    that <em>no one else has.</em><br><br>
+    This site is yours. Open it today,<br>
+    tomorrow, or any day you miss a smile.<br>
+    It will always be waiting for you.<br><br>
+    <em>— MedAmine 🌙🫶</em>
   </div>
-  <div id="pwError">Bochra , Wait for your birthday 🙃🫶</div>
 </div>
 
 <!-- FOOTER -->
@@ -915,81 +958,65 @@ updateViz();
 // 21. PASSWORD SCREEN
 // ═══════════════════════════════════════════════════════
 (function(){
-  const CORRECT = '071223';
-  const PW_KEY  = 'b18_unlocked';
-  const pwScreen = $('pwScreen');
+  const PW_KEY      = 'b18_unlocked';
+  const ADMIN_CODE  = 'medamine';
+  const UNLOCK_DATE = new Date('2026-06-28T23:59:00');
+  const pwScreen    = $('pwScreen');
 
-  // If already unlocked in this session, skip
+  // Already unlocked this session → skip straight in (note still shown briefly)
   if(sessionStorage.getItem(PW_KEY) === '1'){
     pwScreen.style.display = 'none';
     return;
   }
 
-  let entered = '';
+  const pad = n => String(Math.floor(n)).padStart(2,'0');
 
-  function updateDots(){
-    for(let i=0;i<6;i++){
-      const dot = document.getElementById('d'+i);
-      dot.classList.toggle('filled', i < entered.length);
-    }
+  // ── enter the site (fade screen, keep note moment visible) ──
+  function enterSite(){
+    sessionStorage.setItem(PW_KEY,'1');
+    [523,659,784].forEach((f,i)=>setTimeout(()=>playTone(f,'sine',.15,.25),i*120));
+    pwScreen.classList.add('hide');
+    setTimeout(()=>{ pwScreen.style.display='none'; }, 750);
   }
 
-  function wrongAnim(){
-    for(let i=0;i<6;i++){
-      const dot = document.getElementById('d'+i);
-      dot.classList.add('wrong');
-      setTimeout(()=>dot.classList.remove('wrong'),500);
+  // ── countdown tick ──
+  function tick(){
+    const diff = UNLOCK_DATE - new Date();
+
+    if(diff <= 0){
+      // ── DATE PASSED: no password, auto-enter, note stays visible ──
+      $('pwCountdown').style.display = 'none';
+      $('pwUnlockMsg').style.display = 'none';
+      $('pwKeypad').style.display    = 'none';
+      $('pwDots').style.display      = 'none';
+      $('pwError').style.display     = 'none';
+      document.querySelector('.pw-sub').style.display = 'none';
+      pwScreen.classList.remove('locked');
+      // Small pause so she sees the note, then auto-enter
+      setTimeout(enterSite, 2500);
+      return;
     }
-    const err = $('pwError');
-    err.classList.add('show');
-    setTimeout(()=>err.classList.remove('show'),2000);
-    playTone(180, 'sawtooth', .18, .4);
-    entered = '';
-    updateDots();
+
+    // ── STILL LOCKED: show countdown, hide keypad ──
+    pwScreen.classList.add('locked');
+    $('pw-d').textContent = pad(diff / 86400000);
+    $('pw-h').textContent = pad((diff % 86400000) / 3600000);
+    $('pw-m').textContent = pad((diff % 3600000)  / 60000);
+    $('pw-s').textContent = pad((diff % 60000)    / 1000);
+    const s = Math.floor((diff % 60000) / 1000);
+    $('pw-s').style.color = ['#ff6b8a','#f0c060','#7fffd4','#c8a8f8'][s % 4];
+
+    setTimeout(tick, 1000);
   }
+  tick();
 
-  function tryUnlock(){
-    if(entered === CORRECT){
-      sessionStorage.setItem(PW_KEY,'1');
-      [523,659,784].forEach((f,i)=>setTimeout(()=>playTone(f,'sine',.15,.25),i*120));
-      pwScreen.classList.add('hide');
-      setTimeout(()=>{
-        pwScreen.style.display='none';
-      }, 750);
-    } else {
-      wrongAnim();
-    }
-  }
-
-  document.querySelectorAll('.pw-key').forEach(key=>{
-    key.addEventListener('click',()=>{
-      const n = key.dataset.n;
-      playTone(440,'sine',.08,.12);
-      if(n==='del'){
-        entered = entered.slice(0,-1);
-      } else if(n==='clr'){
-        entered = '';
-      } else {
-        if(entered.length >= 6) return;
-        entered += n;
-        if(entered.length === 6) setTimeout(tryUnlock, 150);
-      }
-      updateDots();
-    });
-  });
-
-  // Keyboard support
+  // ── secret admin bypass — type 'medamine' anytime on keyboard ──
+  let adminBuf = '';
   document.addEventListener('keydown', e=>{
-    if(pwScreen.style.display==='none') return;
-    if(/^[0-9]$/.test(e.key) && entered.length<6){
-      entered += e.key;
-      updateDots();
-      playTone(440,'sine',.08,.12);
-      if(entered.length===6) setTimeout(tryUnlock,150);
-    } else if(e.key==='Backspace'){
-      entered = entered.slice(0,-1);
-      updateDots();
-    }
+    if(pwScreen.style.display === 'none') return;
+    adminBuf += e.key.toLowerCase();
+    if(adminBuf.length > ADMIN_CODE.length) adminBuf = adminBuf.slice(-ADMIN_CODE.length);
+    if(adminBuf === ADMIN_CODE){ enterSite(); }
   });
 })();
 
