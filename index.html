@@ -163,6 +163,23 @@ body{font-family:'Jost',sans-serif;cursor:none;display:flex;align-items:center;j
 .btn-b{background:transparent;color:var(--mint);border:1px solid rgba(127,255,212,.35);}
 .btn-b::before{background:rgba(127,255,212,.12);}
 
+.btn-c{background:linear-gradient(135deg,#ff6b8a,#ff9eb5);color:#fff;border:none;box-shadow:0 4px 20px rgba(255,107,138,.25);}
+.btn-c::before{background:linear-gradient(135deg,#c8a8f8,#ff6b8a);}
+.btn-c:hover{box-shadow:0 8px 30px rgba(255,107,138,.4);}
+
+.btn-d{background:transparent;color:var(--gold);border:1px solid rgba(240,192,96,.35);}
+.btn-d::before{background:rgba(240,192,96,.12);}
+
+.btn-e{background:transparent;color:var(--lavender);border:1px solid rgba(200,168,248,.35);}
+.btn-e::before{background:rgba(200,168,248,.12);}
+
+.btn-f{background:linear-gradient(135deg,var(--mint),var(--lavender));color:#0d0a1e;border:none;box-shadow:0 4px 20px rgba(127,255,212,.2);}
+.btn-f::before{background:linear-gradient(135deg,var(--gold),var(--mint));}
+
+.btn-g{background:linear-gradient(135deg,var(--gold),var(--rose));color:#fff;border:none;box-shadow:0 4px 20px rgba(240,192,96,.25);}
+.btn-g::before{background:linear-gradient(135deg,var(--lavender),var(--gold));}
+.btn-g:hover{box-shadow:0 8px 30px rgba(240,192,96,.4);}
+
 /* Audio visualizer (bottom) */
 .viz-wrap{
   margin-top:20px;
@@ -218,18 +235,46 @@ body{font-family:'Jost',sans-serif;cursor:none;display:flex;align-items:center;j
 }
 #moodRing:hover + #moodTip,#moodTip:hover{opacity:1;transform:translateY(0);}
 
-/* Countdown chip */
+/* Birthday countdown chip */
 #cdChip{
   display:inline-flex;gap:16px;
   background:rgba(255,255,255,.04);
   border:1px solid rgba(200,168,248,.12);
   border-radius:50px;padding:10px 22px;
-  margin-bottom:22px;
+  margin-bottom:16px;
   animation:fadeUp .8s .85s both;
 }
 .cd-unit{text-align:center;}
 .cd-num{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:700;color:var(--gold);display:block;line-height:1;}
 .cd-lbl{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,232,255,.3);}
+
+/* Inline guestbook */
+#guestInline{
+  margin-bottom:22px;
+  animation:fadeUp .8s .85s both;
+}
+#gbNameInline,#gbMsgInline{
+  width:100%;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(200,168,248,.18);
+  border-radius:12px;
+  padding:10px 14px;
+  color:var(--text);
+  font-family:'Jost',sans-serif;
+  font-size:.85rem;
+  outline:none;
+  margin-bottom:8px;
+  resize:none;
+  display:block;
+  transition:border-color .2s;
+}
+#gbNameInline:focus,#gbMsgInline:focus{border-color:rgba(200,168,248,.45);}
+#gbSentMsg{
+  font-family:'Fraunces',serif;font-style:italic;
+  font-size:.88rem;color:var(--mint);
+  text-align:center;padding:8px 0;
+  animation:fadeUp .5s both;
+}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
 
@@ -345,19 +390,14 @@ body{font-family:'Jost',sans-serif;cursor:none;display:flex;align-items:center;j
   <div class="pw-title">This is for Bochra 🌸</div>
   <div class="pw-sub">Opens on 28 juin 2026 at 23:59 ✦</div>
 
-  <!-- Countdown -->
-  <div id="pwCountdown">
-    <div class="pw-cd-block"><span class="pw-cd-num" id="pw-d">00</span><span class="pw-cd-lbl">days</span></div>
-    <div class="pw-cd-block"><span class="pw-cd-num" id="pw-h">00</span><span class="pw-cd-lbl">hrs</span></div>
-    <div class="pw-cd-block"><span class="pw-cd-num" id="pw-m">00</span><span class="pw-cd-lbl">min</span></div>
-    <div class="pw-cd-block"><span class="pw-cd-num" id="pw-s">00</span><span class="pw-cd-lbl">sec</span></div>
-  </div>
-  <div id="pwUnlockMsg">until the surprise opens for you 🌙</div>
+  <!-- Countdown injected by JS -->
+  <div id="pwCountdown"></div>
+  <div id="pwUnlockMsg"></div>
 
   <!-- Note — always visible -->
   <div class="pw-note">
     I built this website just for you.<br>
-    Every line of code, every color, every detail —<br>
+    Every line of code, every color, every detail <br>
     I did it all by myself. No help.<br>
     Just me, my screen, and <em>you in my mind.</em><br><br>
     It was not easy. But when I think about<br>
@@ -369,6 +409,7 @@ body{font-family:'Jost',sans-serif;cursor:none;display:flex;align-items:center;j
     tomorrow, or any day you miss a smile.<br>
     It will always be waiting for you.<br><br>
     <em>— MedAmine 🌙🫶</em>
+
   </div>
 </div>
 
@@ -398,11 +439,22 @@ body{font-family:'Jost',sans-serif;cursor:none;display:flex;align-items:center;j
         <div class="div-r"></div>
       </div>
 
+      <!-- Birthday countdown -->
       <div id="cdChip">
         <div class="cd-unit"><span class="cd-num" id="cd-d">00</span><span class="cd-lbl">days</span></div>
         <div class="cd-unit"><span class="cd-num" id="cd-h">00</span><span class="cd-lbl">hrs</span></div>
         <div class="cd-unit"><span class="cd-num" id="cd-m">00</span><span class="cd-lbl">min</span></div>
         <div class="cd-unit"><span class="cd-num" id="cd-s">00</span><span class="cd-lbl">sec</span></div>
+      </div>
+
+      <!-- Inline Guestbook -->
+      <div id="guestInline">
+        <div id="guestForm">
+          <input id="gbNameInline" placeholder="Your name" autocomplete="off">
+          <textarea id="gbMsgInline" placeholder="Write a message🌸" rows="2"></textarea>
+          <button id="gbSubmitInline" class="btn btn-e" style="width:100%;margin-top:0;"><span>✍️ Send message</span></button>
+        </div>
+        <div id="gbSentMsg" style="display:none;"></div>
       </div>
 
       <p class="msg">
@@ -429,6 +481,11 @@ body{font-family:'Jost',sans-serif;cursor:none;display:flex;align-items:center;j
       <div class="btns">
         <button class="btn btn-a" id="celebrateBtn"><span>✦ Celebrate</span></button>
         <button class="btn btn-b" id="wishBtn"><span>🌙 Make a Wish</span></button>
+      </div>
+
+      <div class="btns" style="margin-top:10px;">
+        <button class="btn btn-c" id="letterBtn"><span>💌 Open Letter</span></button>
+        <button class="btn btn-d" id="cannonBtn"><span>🎊 Confetti Cannon</span></button>
       </div>
 
       <div class="viz-wrap">
@@ -969,9 +1026,7 @@ updateViz();
     return;
   }
 
-  const pad = n => String(Math.floor(n)).padStart(2,'0');
-
-  // ── enter the site (fade screen, keep note moment visible) ──
+  // ── enter the site ──
   function enterSite(){
     sessionStorage.setItem(PW_KEY,'1');
     [523,659,784].forEach((f,i)=>setTimeout(()=>playTone(f,'sine',.15,.25),i*120));
@@ -979,32 +1034,60 @@ updateViz();
     setTimeout(()=>{ pwScreen.style.display='none'; }, 750);
   }
 
+  // ── build countdown UI via JS ──
+  const cdWrap = $('pwCountdown');
+  const cdMsg  = $('pwUnlockMsg');
+
+  function buildCountdownUI(d,h,m,s){
+    const pad = n => String(n).padStart(2,'0');
+    const units = [{v:d,l:'days'},{v:h,l:'hrs'},{v:m,l:'min'},{v:s,l:'sec'}];
+    cdWrap.innerHTML = units.map(u=>`
+      <div class="pw-cd-block">
+        <span class="pw-cd-num" id="pw-${u.l}">${pad(u.v)}</span>
+        <span class="pw-cd-lbl">${u.l}</span>
+      </div>
+    `).join('');
+    cdMsg.textContent = 'until the surprise opens for you 🌙';
+  }
+
   // ── countdown tick ──
   function tick(){
     const diff = UNLOCK_DATE - new Date();
 
     if(diff <= 0){
-      // ── DATE PASSED: no password, auto-enter, note stays visible ──
-      $('pwCountdown').style.display = 'none';
-      $('pwUnlockMsg').style.display = 'none';
-      $('pwKeypad').style.display    = 'none';
-      $('pwDots').style.display      = 'none';
-      $('pwError').style.display     = 'none';
-      document.querySelector('.pw-sub').style.display = 'none';
+      // ── DATE PASSED: remove countdown, auto-enter, note stays ──
+      cdWrap.style.display = 'none';
+      cdMsg.style.display  = 'none';
+      $('pwScreen').querySelector('.pw-sub').style.display = 'none';
       pwScreen.classList.remove('locked');
-      // Small pause so she sees the note, then auto-enter
       setTimeout(enterSite, 2500);
       return;
     }
 
-    // ── STILL LOCKED: show countdown, hide keypad ──
+    // ── STILL LOCKED: build/update countdown blocks via JS ──
     pwScreen.classList.add('locked');
-    $('pw-d').textContent = pad(diff / 86400000);
-    $('pw-h').textContent = pad((diff % 86400000) / 3600000);
-    $('pw-m').textContent = pad((diff % 3600000)  / 60000);
-    $('pw-s').textContent = pad((diff % 60000)    / 1000);
-    const s = Math.floor((diff % 60000) / 1000);
-    $('pw-s').style.color = ['#ff6b8a','#f0c060','#7fffd4','#c8a8f8'][s % 4];
+    const td = Math.floor(diff / 86400000);
+    const th = Math.floor((diff % 86400000) / 3600000);
+    const tm = Math.floor((diff % 3600000)  / 60000);
+    const ts = Math.floor((diff % 60000)    / 1000);
+
+    // First render — build full HTML
+    if(!cdWrap.innerHTML.trim()){
+      buildCountdownUI(td, th, tm, ts);
+    } else {
+      // After first render — just update the text nodes
+      const pad = n => String(n).padStart(2,'0');
+      const secEl = $('pw-sec');
+      if(secEl) secEl.textContent = pad(ts);
+      const minEl = $('pw-min');
+      if(minEl) minEl.textContent = pad(tm);
+      const hrEl  = $('pw-hrs');
+      if(hrEl)  hrEl.textContent  = pad(th);
+      const dayEl = $('pw-days');
+      if(dayEl) dayEl.textContent = pad(td);
+      // Pulse seconds color
+      if(secEl) secEl.style.color = ['#ff6b8a','#f0c060','#7fffd4','#c8a8f8'][ts % 4];
+    }
 
     setTimeout(tick, 1000);
   }
@@ -1053,6 +1136,805 @@ document.querySelectorAll('.btn,.pw-key,.wish-card,#moon,#moodRing').forEach(el=
   el.addEventListener('click', playClickSound);
 });
 
+// ═══════════════════════════════════════════════════════
+// 23. TYPING EFFECT ON PW SCREEN NOTE
+// ═══════════════════════════════════════════════════════
+(function(){
+  const note = document.querySelector('.pw-note');
+  if(!note) return;
+  // Fade in lines one by one
+  const lines = note.querySelectorAll('br');
+  note.style.opacity = '0';
+  note.style.transition = 'opacity 1.2s ease';
+  setTimeout(()=>{ note.style.opacity = '1'; }, 800);
+})();
+
+// ═══════════════════════════════════════════════════════
+// 24. FLOATING HEARTS ON PW SCREEN
+// ═══════════════════════════════════════════════════════
+(function(){
+  const HEART_EMOJIS = ['🌸','✦','🌙','💫','⭐','🌺','♥'];
+  function spawnPwHeart(){
+    const pw = $('pwScreen');
+    if(!pw || pw.style.display === 'none') return;
+    const el = document.createElement('div');
+    el.textContent = HEART_EMOJIS[Math.floor(Math.random() * HEART_EMOJIS.length)];
+    const x = 5 + Math.random() * 90;
+    const dur = 4 + Math.random() * 4;
+    const size = 0.8 + Math.random() * 1.2;
+    el.style.cssText = `
+      position:fixed;
+      left:${x}vw;
+      bottom:-30px;
+      font-size:${size}rem;
+      pointer-events:none;
+      z-index:99998;
+      opacity:0.6;
+      animation: pwHeartRise ${dur.toFixed(1)}s ease-out forwards;
+    `;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), dur * 1000 + 500);
+  }
+
+  // Inject keyframe once
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes pwHeartRise {
+      0%   { transform: translateY(0) scale(0.5) rotate(-10deg); opacity: 0.7; }
+      50%  { opacity: 0.5; }
+      100% { transform: translateY(-100vh) scale(1.1) rotate(15deg); opacity: 0; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Spawn every 1.2 seconds while pw screen is visible
+  const heartInterval = setInterval(()=>{
+    const pw = $('pwScreen');
+    if(!pw || pw.style.display === 'none'){ clearInterval(heartInterval); return; }
+    spawnPwHeart();
+  }, 1200);
+})();
+
+// ═══════════════════════════════════════════════════════
+// 25. LOCK ICON CLICK EASTER EGG ON PW SCREEN
+// ═══════════════════════════════════════════════════════
+(function(){
+  const lock = document.querySelector('.pw-lock');
+  if(!lock) return;
+  let clicks = 0;
+  const msgs = ['🌸','💕','🫶','✨','🌙','Soon...','🔒❤️'];
+  lock.style.cursor = 'pointer';
+  lock.addEventListener('click', ()=>{
+    playTone(600 + clicks * 80, 'sine', 0.08, 0.15);
+    const msg = msgs[clicks % msgs.length];
+    const pop = document.createElement('div');
+    pop.textContent = msg;
+    pop.style.cssText = `
+      position:fixed;
+      left:50%;top:38%;
+      transform:translateX(-50%) scale(0.5);
+      font-size:1.8rem;
+      pointer-events:none;
+      z-index:99999;
+      transition:transform 0.25s cubic-bezier(.34,1.56,.64,1), opacity 0.5s ease 0.3s;
+      opacity:1;
+    `;
+    document.body.appendChild(pop);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      pop.style.transform = 'translateX(-50%) scale(1.2)';
+    }));
+    setTimeout(()=>{ pop.style.opacity='0'; setTimeout(()=>pop.remove(),500); }, 800);
+    clicks++;
+    // After 7 clicks — shake the lock
+    if(clicks % 7 === 0){
+      lock.style.animation = 'none';
+      let n = 0;
+      const sh = setInterval(()=>{
+        lock.style.transform = `translateX(${(Math.random()-.5)*14}px) rotate(${(Math.random()-.5)*8}deg)`;
+        if(++n > 10){ clearInterval(sh); lock.style.transform = ''; }
+      }, 40);
+    }
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+// 26. SPARKLE TRAIL ON PW SCREEN MOUSE MOVE
+// ═══════════════════════════════════════════════════════
+(function(){
+  const COLORS = ['#ff6b8a','#f0c060','#c8a8f8','#7fffd4'];
+  document.addEventListener('mousemove', e=>{
+    const pw = $('pwScreen');
+    if(!pw || pw.style.display === 'none') return;
+    if(Math.random() > 0.35) return;
+    const dot = document.createElement('div');
+    const size = 4 + Math.random() * 6;
+    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    dot.style.cssText = `
+      position:fixed;
+      left:${e.clientX}px;top:${e.clientY}px;
+      width:${size}px;height:${size}px;
+      border-radius:50%;
+      background:${color};
+      pointer-events:none;z-index:99997;
+      transform:translate(-50%,-50%);
+      transition:opacity 0.6s ease, transform 0.6s ease;
+      opacity:0.8;
+    `;
+    document.body.appendChild(dot);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      dot.style.opacity = '0';
+      dot.style.transform = `translate(-50%,-50%) scale(0) translateY(-${20+Math.random()*20}px)`;
+    }));
+    setTimeout(()=>dot.remove(), 700);
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+// 27. CLOCK — live time displayed on pw screen
+// ═══════════════════════════════════════════════════════
+(function(){
+  const clockEl = document.createElement('div');
+  clockEl.id = 'pwClock';
+  clockEl.style.cssText = `
+    font-family:'Fraunces',serif;font-style:italic;
+    font-size:0.75rem;letter-spacing:0.15em;
+    color:rgba(200,168,248,0.35);margin-top:6px;
+  `;
+  const msgEl = $('pwUnlockMsg');
+  if(msgEl) msgEl.after(clockEl);
+
+  function updateClock(){
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const s = String(now.getSeconds()).padStart(2,'0');
+    clockEl.textContent = `${h}:${m}:${s}`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+})();
+
+// ═══════════════════════════════════════════════════════
+// 28. NOTE TEXT GLOW ON HOVER — pw screen
+// ═══════════════════════════════════════════════════════
+(function(){
+  const note = document.querySelector('.pw-note');
+  if(!note) return;
+  note.addEventListener('mouseenter', ()=>{
+    note.style.transition = 'color 0.5s ease, text-shadow 0.5s ease';
+    note.style.color = 'rgba(240,232,255,0.75)';
+    note.style.textShadow = '0 0 20px rgba(200,168,248,0.2)';
+  });
+  note.addEventListener('mouseleave', ()=>{
+    note.style.color = '';
+    note.style.textShadow = '';
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+// NEW BUTTONS JS
+// ═══════════════════════════════════════════════════════
+
+// ── 💌 OPEN LETTER BUTTON — shows letter + all guestbook messages + count ──
+(function(){
+  const btn=$('letterBtn'); if(!btn) return;
+  const STORAGE_KEY='b18_guestbook';
+  function getEntries(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); }catch(e){return [];} }
+  let open=false, overlay=null;
+
+  btn.addEventListener('click',()=>{
+    playClickSound();
+    if(open){ overlay&&overlay.remove(); open=false; btn.querySelector('span').textContent='💌 Open Letter'; return; }
+    open=true; btn.querySelector('span').textContent='✕ Close Letter';
+
+    const entries=getEntries();
+    const count=entries.length;
+
+    overlay=document.createElement('div');
+    overlay.style.cssText=`position:fixed;inset:0;z-index:800;display:flex;align-items:center;justify-content:center;background:rgba(5,3,15,.88);backdrop-filter:blur(14px);overflow-y:auto;padding:30px 16px;`;
+
+    const letterLines=['Bochra,','','I built this website just for you.','Every line of code, every color,','every detail I did it all by myself.','No help. Just me, my screen,','and you in my mind.','','It was not easy.','But when I think about who this is for,','it becomes worth it.','','You are not like anyone else.','You have a place in my heart','that no one else has.','','This site is yours.','Open it any day you miss a smile.','It will always be waiting for you.','','— MedAmine 🌙🫶'];
+
+    const msgHTML = count>0
+      ? entries.map(e=>`<div style="border-bottom:1px solid rgba(200,168,248,.1);padding:10px 0;"><div style="font-size:.75rem;font-weight:500;color:var(--lavender);">${e.name}<span style="color:rgba(240,232,255,.25);font-size:.6rem;margin-left:6px;">${e.time}</span></div><div style="font-size:.82rem;color:rgba(240,232,255,.6);margin-top:3px;font-style:italic;">"${e.msg}"</div></div>`).join('')
+      : `<div style="color:rgba(240,232,255,.3);font-size:.8rem;text-align:center;padding:10px 0;font-style:italic;">No messages yet 🌸</div>`;
+
+    const card=document.createElement('div');
+    card.style.cssText=`background:linear-gradient(160deg,rgba(22,14,48,.98),rgba(10,6,28,.99));border:1px solid rgba(200,168,248,.22);border-radius:28px;padding:40px 36px;max-width:400px;width:100%;box-shadow:0 0 80px rgba(200,168,248,.08),0 60px 120px rgba(0,0,0,.9);transform:scale(0.85);opacity:0;transition:all .5s cubic-bezier(.34,1.56,.64,1);`;
+    card.innerHTML=`
+      <div style="font-size:2rem;text-align:center;margin-bottom:16px;">💌</div>
+      <div style="font-family:'Fraunces',serif;font-style:italic;font-size:.92rem;color:rgba(240,232,255,.72);line-height:1.85;margin-bottom:28px;">
+        ${letterLines.map((l,i)=>`<div class="ll" style="opacity:0;transform:translateY(6px);transition:opacity .35s ease ${i*.07}s,transform .35s ease ${i*.07}s;">${l||'&nbsp;'}</div>`).join('')}
+      </div>
+      <div style="border-top:1px solid rgba(200,168,248,.15);padding-top:20px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <span style="font-family:'Fraunces',serif;font-size:.85rem;color:var(--lavender);">Messages</span>
+          <span style="background:var(--rose);color:#fff;border-radius:50px;font-size:.65rem;padding:2px 10px;font-weight:500;">${count}</span>
+        </div>
+        <div style="max-height:220px;overflow-y:auto;">${msgHTML}</div>
+      </div>
+      <div style="text-align:center;margin-top:20px;"><span id="closeLetter" style="font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,248,.3);cursor:pointer;">close ✕</span></div>
+    `;
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      card.style.opacity='1'; card.style.transform='scale(1)';
+      setTimeout(()=>card.querySelectorAll('.ll').forEach(el=>{el.style.opacity='1';el.style.transform='translateY(0)';}),200);
+    }));
+    card.querySelector('#closeLetter').addEventListener('click',()=>{overlay.remove();open=false;btn.querySelector('span').textContent='💌 Open Letter';});
+    overlay.addEventListener('click',e=>{if(e.target===overlay){overlay.remove();open=false;btn.querySelector('span').textContent='💌 Open Letter';}});
+    for(let i=0;i<5;i++) setTimeout(()=>spawnSparkle(rand(W*.2,W*.8),rand(H*.2,H*.6),FLOWER_COLORS[randInt(0,5)],5),i*150);
+  });
+})();
+
+// ── 🎊 CONFETTI CANNON BUTTON ──
+(function(){
+  const btn=$('cannonBtn'); if(!btn) return;
+  let shots=0;
+  function cannon(originX){
+    const COLORS=['#ff6b8a','#f0c060','#c8a8f8','#7fffd4','#ffffff','#ffb3c6','#a8ff3e'];
+    for(let i=0;i<60;i++){
+      const el=document.createElement('div');
+      const isRect=Math.random()>.5;
+      const color=COLORS[Math.floor(Math.random()*COLORS.length)];
+      const angle=-(rand(30,150));
+      const speed=rand(6,18);
+      const vx=Math.cos(angle*Math.PI/180)*speed;
+      const vy=Math.sin(angle*Math.PI/180)*speed;
+      el.style.cssText=`position:fixed;left:${originX}px;top:${H*.8}px;width:${isRect?rand(6,12)+'px':rand(5,10)+'px'};height:${isRect?rand(3,7)+'px':rand(5,10)+'px'};border-radius:${isRect?'2px':'50%'};background:${color};pointer-events:none;z-index:600;`;
+      document.body.appendChild(el);
+      let x=originX,y=H*.8,velX=vx,velY=vy,rot=rand(0,360),life=1;
+      const tick=()=>{velY+=0.45;x+=velX;y+=velY;rot+=velX*2;life-=0.012;el.style.left=x+'px';el.style.top=y+'px';el.style.transform=`rotate(${rot}deg)`;el.style.opacity=Math.max(0,life);if(life>0&&y<H+50)requestAnimationFrame(tick);else el.remove();};
+      requestAnimationFrame(tick);
+    }
+  }
+  btn.addEventListener('click',()=>{
+    playClickSound();shots++;
+    if(shots%3===1) cannon(W*.15);
+    else if(shots%3===2) cannon(W*.85);
+    else{cannon(W*.15);setTimeout(()=>cannon(W*.85),200);}
+    btn.style.transform='scale(0.9)';
+    setTimeout(()=>btn.style.transform='',200);
+  });
+})();
+
+// ── INLINE GUESTBOOK SUBMIT ──
+(function(){
+  const STORAGE_KEY='b18_guestbook';
+  function getEntries(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); }catch(e){return [];} }
+  function saveEntry(name,msg){
+    const entries=getEntries();
+    entries.unshift({name:name.slice(0,30),msg:msg.slice(0,140),time:new Date().toLocaleDateString('fr-FR')});
+    if(entries.length>30) entries.pop();
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(entries));
+  }
+  const submitBtn=$('gbSubmitInline'); if(!submitBtn) return;
+  submitBtn.addEventListener('click',()=>{
+    const name=($('gbNameInline').value||'Anonymous').trim();
+    const msg=($('gbMsgInline').value||'').trim();
+    if(!msg) return;
+    saveEntry(name,msg);
+    playTone(523,'sine',.1,.2);
+    spawnSparkle(W/2,H*.6,FLOWER_COLORS[randInt(0,5)],10);
+    $('guestForm').style.display='none';
+    const sentEl=$('gbSentMsg');
+    sentEl.style.display='block';
+    sentEl.innerHTML=`<div style="font-size:1.4rem;margin-bottom:8px;">🌸</div><div>Your message was sent!</div><div style="font-size:.72rem;color:rgba(240,232,255,.3);margin-top:6px;letter-spacing:.1em;">She will find it when she opens the letter ✦</div>`;
+    setTimeout(()=>{
+      $('gbNameInline').value='';$('gbMsgInline').value='';
+      $('guestForm').style.display='block';sentEl.style.display='none';
+    },5000);
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+// 29. WELCOME SEQUENCE — cinematic entrance after unlock
+// ═══════════════════════════════════════════════════════
+(function(){
+  // Fires once per session right after pw screen hides
+  const observer = new MutationObserver(()=>{
+    const pw = $('pwScreen');
+    if(pw && pw.style.display === 'none'){
+      observer.disconnect();
+      runWelcome();
+    }
+  });
+  const pw = $('pwScreen');
+  if(pw) observer.observe(pw, { attributes:true, attributeFilter:['style'] });
+
+  function runWelcome(){
+    // 1. Flash the whole page white briefly
+    const flash = document.createElement('div');
+    flash.style.cssText = `position:fixed;inset:0;background:#fff;opacity:0.18;z-index:8000;pointer-events:none;transition:opacity 0.8s ease;`;
+    document.body.appendChild(flash);
+    setTimeout(()=>{ flash.style.opacity='0'; setTimeout(()=>flash.remove(),900); },200);
+
+    // 2. Big "Welcome Bochra 🌸" message typewriter
+    setTimeout(()=>{
+      const el = document.createElement('div');
+      el.style.cssText = `
+        position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+        font-family:'Fraunces',serif;font-style:italic;
+        font-size:clamp(1.4rem,5vw,2.2rem);
+        color:#f0e8ff;text-align:center;line-height:1.6;
+        pointer-events:none;z-index:8000;
+        text-shadow:0 0 40px rgba(200,168,248,0.5);
+        opacity:0;transition:opacity 0.4s ease;
+        white-space:nowrap;
+      `;
+      document.body.appendChild(el);
+      setTimeout(()=>el.style.opacity='1',50);
+      const text = 'Welcome, Bochra 🌸';
+      let i=0;
+      const t=setInterval(()=>{
+        el.textContent=text.slice(0,++i);
+        if(i>=text.length){ clearInterval(t); }
+      },55);
+      setTimeout(()=>{
+        el.style.opacity='0';
+        setTimeout(()=>el.remove(),600);
+      },3200);
+    },400);
+
+    // 3. Burst of flowers from center
+    setTimeout(()=>{
+      for(let i=0;i<6;i++){
+        setTimeout(()=>bigBurst(
+          W*0.2+Math.random()*W*0.6,
+          H*0.2+Math.random()*H*0.4
+        ,16),i*200);
+      }
+    },800);
+  }
+})();
+
+// ═══════════════════════════════════════════════════════
+// 30. DOUBLE CLICK THE 18 — confetti explosion
+// ═══════════════════════════════════════════════════════
+(function(){
+  const age = $('ageNum');
+  if(!age) return;
+  age.addEventListener('dblclick', ()=>{
+    for(let i=0;i<8;i++){
+      setTimeout(()=>{
+        bigBurst(
+          age.getBoundingClientRect().left + age.offsetWidth/2 + rand(-60,60),
+          age.getBoundingClientRect().top  + rand(-20,20)
+        , 20);
+      }, i*100);
+    }
+    // Rainbow text briefly
+    age.style.filter = 'hue-rotate(0deg) brightness(1.6)';
+    let deg=0;
+    const spin = setInterval(()=>{
+      deg+=15; age.style.filter=`hue-rotate(${deg}deg) brightness(1.4)`;
+      if(deg>=360){ clearInterval(spin); age.style.filter=''; }
+    },40);
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+// 31. SCROLL TO REVEAL — card sections animate in on scroll
+// ═══════════════════════════════════════════════════════
+(function(){
+  const targets = document.querySelectorAll('.wishes, .btns, .viz-wrap, #cdChip');
+  if(!targets.length) return;
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.style.transition='opacity 0.7s ease, transform 0.7s cubic-bezier(.16,1,.3,1)';
+        e.target.style.opacity='1';
+        e.target.style.transform='translateY(0)';
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.15});
+  targets.forEach(el=>{
+    el.style.opacity='0';
+    el.style.transform='translateY(24px)';
+    io.observe(el);
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+// 32. WISH CARDS — 3D TILT on mouse move
+// ═══════════════════════════════════════════════════════
+(function(){
+  document.querySelectorAll('.wish-card').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect();
+      const cx=(e.clientX-r.left)/r.width  - 0.5;
+      const cy=(e.clientY-r.top) /r.height - 0.5;
+      card.style.transform=`translateY(-4px) scale(1.04) rotateX(${-cy*14}deg) rotateY(${cx*14}deg)`;
+      card.style.transition='transform 0.1s ease';
+    });
+    card.addEventListener('mouseleave',()=>{
+      card.style.transform='';
+      card.style.transition='transform 0.4s ease';
+    });
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+// 33. LONG PRESS CELEBRATE — hold button for mega burst
+// ═══════════════════════════════════════════════════════
+(function(){
+  const btn = $('celebrateBtn');
+  if(!btn) return;
+  let pressTimer;
+  btn.addEventListener('mousedown',()=>{
+    pressTimer = setTimeout(()=>{
+      // MEGA burst — 10 waves
+      for(let i=0;i<10;i++){
+        setTimeout(()=>{
+          bigBurst(rand(60,W-60), rand(60,H-60), 20);
+        }, i*150);
+      }
+      // Rainbow flash on age
+      let deg=0;
+      const age=$('ageNum');
+      const s=setInterval(()=>{
+        deg+=12; age.style.filter=`hue-rotate(${deg}deg) brightness(1.5)`;
+        if(deg>=720){ clearInterval(s); age.style.filter=''; }
+      },30);
+      // Show "MEGA CELEBRATE!" text
+      const el=document.createElement('div');
+      el.textContent='🎉 MEGA CELEBRATE! 🎉';
+      el.style.cssText=`position:fixed;left:50%;top:20%;transform:translateX(-50%);font-family:'Fraunces',serif;font-size:1.4rem;color:var(--gold);pointer-events:none;z-index:600;text-shadow:0 0 30px rgba(240,192,96,.6);animation:floatMsg 2.8s ease-out forwards;white-space:nowrap;`;
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(),2900);
+    }, 600);
+  });
+  btn.addEventListener('mouseup', ()=>clearTimeout(pressTimer));
+  btn.addEventListener('mouseleave', ()=>clearTimeout(pressTimer));
+  // Touch support
+  btn.addEventListener('touchstart',()=>{ pressTimer=setTimeout(()=>btn.dispatchEvent(new MouseEvent('mousedown')),600); });
+  btn.addEventListener('touchend',()=>clearTimeout(pressTimer));
+})();
+
+// ═══════════════════════════════════════════════════════
+// 34. TYPING EASTER EGG — type "bochra" on main page
+// ═══════════════════════════════════════════════════════
+(function(){
+  const SECRET = 'bochra';
+  let buf = '';
+  document.addEventListener('keydown', e=>{
+    if($('pwScreen') && $('pwScreen').style.display !== 'none') return;
+    buf += e.key.toLowerCase();
+    if(buf.length > SECRET.length) buf = buf.slice(-SECRET.length);
+    if(buf === SECRET){
+      buf = '';
+      // Special message
+      const el = document.createElement('div');
+      el.style.cssText = `
+        position:fixed;left:50%;top:35%;transform:translateX(-50%);
+        font-family:'Fraunces',serif;font-style:italic;font-size:1.3rem;
+        color:var(--rose);text-align:center;pointer-events:none;
+        z-index:600;animation:floatMsg 3s ease-out forwards;white-space:nowrap;
+        text-shadow:0 0 30px rgba(255,107,138,.5);
+      `;
+      el.textContent = '🌸 Hi Bochra! You found the secret! 🌸';
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(),3100);
+      for(let i=0;i<5;i++) setTimeout(()=>bigBurst(rand(100,W-100),rand(80,H*.5),18),i*200);
+    }
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+// 35. FOOTER CLICK — sends a hidden love message
+// ═══════════════════════════════════════════════════════
+(function(){
+  const footer = $('footer');
+  if(!footer) return;
+  footer.style.pointerEvents = 'auto';
+  footer.style.cursor = 'pointer';
+  let fClicks = 0;
+  const footerMsgs = [
+    '🌙 MedAmine was here ✦',
+    '💕 Made with love',
+    '🌸 Only for Bochra',
+    '✨ You are my favorite person',
+    '🫶 Always here for you',
+  ];
+  footer.addEventListener('click', ()=>{
+    playTone(440,'sine',.08,.15);
+    const msg = footerMsgs[fClicks % footerMsgs.length]; fClicks++;
+    const el = document.createElement('div');
+    el.textContent = msg;
+    el.style.cssText = `
+      position:fixed;left:50%;bottom:60px;transform:translateX(-50%);
+      font-family:'Fraunces',serif;font-style:italic;font-size:0.9rem;
+      color:var(--lavender);pointer-events:none;z-index:600;
+      white-space:nowrap;opacity:1;
+      transition:opacity 0.5s ease 1.5s, transform 0.5s ease 1.5s;
+    `;
+    document.body.appendChild(el);
+    setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateX(-50%) translateY(-20px)'; setTimeout(()=>el.remove(),600); },1800);
+    spawnSparkle(footer.getBoundingClientRect().left + footer.offsetWidth/2, footer.getBoundingClientRect().top, FLOWER_COLORS[randInt(0,5)], 8);
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+// 36. RAGE CLICK DETECTOR — click fast = explosion
+// ═══════════════════════════════════════════════════════
+(function(){
+  let clickTimes=[];
+  document.addEventListener('click',e=>{
+    if($('pwScreen')&&$('pwScreen').style.display!=='none') return;
+    const now=Date.now();
+    clickTimes.push(now);
+    clickTimes=clickTimes.filter(t=>now-t<1500);
+    if(clickTimes.length>=6){
+      clickTimes=[];
+      for(let i=0;i<6;i++) setTimeout(()=>bigBurst(rand(80,W-80),rand(80,H-80),18),i*120);
+      const el=document.createElement('div');
+      el.textContent='💥 RAGE MODE! 💥';
+      el.style.cssText=`position:fixed;left:50%;top:25%;transform:translateX(-50%);font-family:'Fraunces',serif;font-style:italic;font-size:1.6rem;color:var(--rose);pointer-events:none;z-index:600;animation:floatMsg 2.5s ease-out forwards;white-space:nowrap;text-shadow:0 0 30px rgba(255,107,138,.7);`;
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(),2600);
+    }
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+// 37. BATTERY STATUS — show cute message based on battery
+// ═══════════════════════════════════════════════════════
+(function(){
+  if(!navigator.getBattery) return;
+  navigator.getBattery().then(b=>{
+    const pct=Math.round(b.level*100);
+    let msg='';
+    if(pct<=20) msg=`🔋 Your battery is at ${pct}% — don't let your phone die before you enjoy this! 🌸`;
+    else if(pct>=90) msg=`⚡ ${pct}% battery — fully charged like your energy, Bochra! 🌟`;
+    if(!msg) return;
+    setTimeout(()=>{
+      const el=document.createElement('div');
+      el.textContent=msg;
+      el.style.cssText=`position:fixed;bottom:30px;left:50%;transform:translateX(-50%);font-family:'Jost',sans-serif;font-size:.7rem;color:rgba(200,168,248,.7);background:rgba(13,10,30,.9);border:1px solid rgba(200,168,248,.2);border-radius:12px;padding:8px 16px;pointer-events:none;z-index:600;white-space:nowrap;opacity:0;transition:opacity .5s ease;`;
+      document.body.appendChild(el);
+      requestAnimationFrame(()=>requestAnimationFrame(()=>el.style.opacity='1'));
+      setTimeout(()=>{el.style.opacity='0';setTimeout(()=>el.remove(),600);},5000);
+    },3000);
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+// 38. SHAKE DEVICE = confetti (mobile)
+// ═══════════════════════════════════════════════════════
+(function(){
+  let lastX=0,lastY=0,lastZ=0,lastShake=0;
+  window.addEventListener('devicemotion',e=>{
+    const a=e.accelerationIncludingGravity;
+    if(!a) return;
+    const dx=Math.abs(a.x-lastX),dy=Math.abs(a.y-lastY),dz=Math.abs(a.z-lastZ);
+    lastX=a.x;lastY=a.y;lastZ=a.z;
+    if(dx+dy+dz>40&&Date.now()-lastShake>1500){
+      lastShake=Date.now();
+      for(let i=0;i<4;i++) setTimeout(()=>bigBurst(rand(80,W-80),rand(80,H*.6),14),i*180);
+      const el=document.createElement('div');
+      el.textContent='🌸 Shake it! 🌸';
+      el.style.cssText=`position:fixed;left:50%;top:30%;transform:translateX(-50%);font-family:'Fraunces',serif;font-style:italic;font-size:1.4rem;color:var(--gold);pointer-events:none;z-index:600;animation:floatMsg 2.5s ease-out forwards;white-space:nowrap;`;
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(),2600);
+    }
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+// 39. PAGE VISIBILITY — surprise when she comes back
+// ═══════════════════════════════════════════════════════
+(function(){
+  let leftAt=0;
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){ leftAt=Date.now(); return; }
+    if($('pwScreen')&&$('pwScreen').style.display!=='none') return;
+    const away=Date.now()-leftAt;
+    if(away<3000||leftAt===0) return;
+    const msgs=[
+      'Welcome back, Bochra 🌸',
+      'I missed you ✨',
+      'You came back 🌙',
+      'Still here for you 🫶',
+    ];
+    const el=document.createElement('div');
+    el.textContent=msgs[Math.floor(Math.random()*msgs.length)];
+    el.style.cssText=`position:fixed;left:50%;top:40%;transform:translateX(-50%);font-family:'Fraunces',serif;font-style:italic;font-size:1.3rem;color:var(--mint);pointer-events:none;z-index:600;animation:floatMsg 3s ease-out forwards;white-space:nowrap;text-shadow:0 0 20px rgba(127,255,212,.4);`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),3100);
+    spawnSparkle(W/2,H/2,FLOWER_COLORS[randInt(0,5)],10);
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+// 40. NIGHT MODE AUTO-SWITCH — changes mood by time
+// ═══════════════════════════════════════════════════════
+(function(){
+  const h=new Date().getHours();
+  // Late night (22-5): switch to midnight mood automatically
+  if(h>=22||h<5){
+    setTimeout(()=>{
+      document.documentElement.style.setProperty('--deep','#020108');
+      document.documentElement.style.setProperty('--lavender','#a070e8');
+      const el=document.createElement('div');
+      el.textContent='🌑 Night mode activated ✦';
+      el.style.cssText=`position:fixed;bottom:50px;right:20px;font-family:'Fraunces',serif;font-style:italic;font-size:.7rem;color:rgba(160,112,232,.6);pointer-events:none;z-index:600;opacity:0;transition:opacity .5s ease;`;
+      document.body.appendChild(el);
+      requestAnimationFrame(()=>requestAnimationFrame(()=>el.style.opacity='1'));
+      setTimeout(()=>{el.style.opacity='0';setTimeout(()=>el.remove(),600);},3000);
+    },1500);
+  }
+  // Morning (6-10): warm golden mood
+  if(h>=6&&h<10){
+    setTimeout(()=>{
+      document.documentElement.style.setProperty('--rose','#ff9a6c');
+      document.documentElement.style.setProperty('--gold','#ffd060');
+    },1500);
+  }
+})();
+
+// ═══════════════════════════════════════════════════════
+// 41. CARD MAGNETIC HOVER — card follows mouse slightly
+// ═══════════════════════════════════════════════════════
+(function(){
+  const card=document.querySelector('.card');
+  if(!card) return;
+  document.addEventListener('mousemove',e=>{
+    if($('pwScreen')&&$('pwScreen').style.display!=='none') return;
+    const cx=W/2, cy=H/2;
+    const dx=(e.clientX-cx)/cx*6;
+    const dy=(e.clientY-cy)/cy*4;
+    card.style.transform=`perspective(1000px) rotateY(${dx}deg) rotateX(${-dy}deg) translateZ(4px)`;
+    card.style.transition='transform 0.15s ease';
+  });
+  document.addEventListener('mouseleave',()=>{
+    card.style.transform='';
+    card.style.transition='transform 0.6s ease';
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+// 42. STAR CLICK TRAIL — stars appear at cursor on hover
+// ═══════════════════════════════════════════════════════
+(function(){
+  const STAR_CHARS=['✦','✧','⋆','·','✸','✵'];
+  let lastStarTime=0;
+  document.addEventListener('mousemove',e=>{
+    if($('pwScreen')&&$('pwScreen').style.display!=='none') return;
+    if(Date.now()-lastStarTime<80) return;
+    lastStarTime=Date.now();
+    if(Math.random()>0.4) return;
+    const el=document.createElement('div');
+    el.textContent=STAR_CHARS[Math.floor(Math.random()*STAR_CHARS.length)];
+    const size=0.5+Math.random()*0.9;
+    el.style.cssText=`
+      position:fixed;left:${e.clientX}px;top:${e.clientY}px;
+      font-size:${size}rem;
+      color:${FLOWER_COLORS[randInt(0,5)]};
+      pointer-events:none;z-index:9;
+      transform:translate(-50%,-50%);
+      opacity:1;transition:opacity 0.8s ease,transform 0.8s ease;
+    `;
+    document.body.appendChild(el);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      el.style.opacity='0';
+      el.style.transform=`translate(-50%,-50%) translateY(-${20+Math.random()*30}px) scale(0.5)`;
+    }));
+    setTimeout(()=>el.remove(),900);
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+// 43. CONFETTI RAIN BUTTON — hold space bar
+// ═══════════════════════════════════════════════════════
+(function(){
+  let spaceHeld=false, spaceInterval;
+  document.addEventListener('keydown',e=>{
+    if(e.code!=='Space'||spaceHeld) return;
+    if($('pwScreen')&&$('pwScreen').style.display!=='none') return;
+    e.preventDefault();
+    spaceHeld=true;
+    let count=0;
+    spaceInterval=setInterval(()=>{
+      spawnSparkle(rand(W*.1,W*.9),rand(H*.1,H*.4),FLOWER_COLORS[randInt(0,5)],4);
+      if(++count%8===0) bigBurst(rand(60,W-60),rand(60,H*.5),12);
+    },120);
+  });
+  document.addEventListener('keyup',e=>{
+    if(e.code!=='Space') return;
+    spaceHeld=false;
+    clearInterval(spaceInterval);
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+// 44. ANIMATED NAME SIGNATURE — appears once after welcome
+// ═══════════════════════════════════════════════════════
+(function(){
+  const KEY='b18_sig_shown';
+  if(sessionStorage.getItem(KEY)) return;
+
+  // Wait for pw screen to be gone
+  const check=setInterval(()=>{
+    const pw=$('pwScreen');
+    if(!pw||pw.style.display!=='none') return;
+    clearInterval(check);
+    sessionStorage.setItem(KEY,'1');
+
+    setTimeout(()=>{
+      const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+      svg.setAttribute('viewBox','0 0 300 80');
+      svg.style.cssText=`position:fixed;left:50%;bottom:80px;transform:translateX(-50%);width:260px;pointer-events:none;z-index:600;opacity:0;transition:opacity 1s ease;`;
+      const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+      // Stylised "Bochra" path (hand-drawn look)
+      path.setAttribute('d','M20,50 C25,20 35,18 42,30 C48,42 44,55 38,52 C32,49 34,38 42,38 C55,38 55,55 65,45 C72,38 68,25 78,28 C88,31 82,50 90,50 M95,28 L95,55 M95,38 C100,30 112,28 115,38 C118,48 110,55 103,52 M120,28 L120,55 C120,60 125,62 130,60 M135,38 C138,28 150,26 153,38 L153,55 M158,38 C165,26 175,28 175,38 L175,55');
+      path.setAttribute('fill','none');
+      path.setAttribute('stroke','#c8a8f8');
+      path.setAttribute('stroke-width','2.5');
+      path.setAttribute('stroke-linecap','round');
+      path.setAttribute('stroke-linejoin','round');
+      const len=path.getTotalLength?.()||400;
+      path.style.strokeDasharray=len;
+      path.style.strokeDashoffset=len;
+      path.style.transition='stroke-dashoffset 2.5s cubic-bezier(.4,0,.2,1)';
+      svg.appendChild(path);
+      document.body.appendChild(svg);
+
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        svg.style.opacity='1';
+        path.style.strokeDashoffset='0';
+      }));
+
+      setTimeout(()=>{
+        svg.style.opacity='0';
+        setTimeout(()=>svg.remove(),1100);
+      },5000);
+    },4000);
+  },300);
+})();
+
+// ═══════════════════════════════════════════════════════
+// 45. RANDOM POP QUOTES — appear every 90s while on page
+// ═══════════════════════════════════════════════════════
+(function(){
+  const quotes=[
+    'You deserve every good thing 🌸',
+    'Smile, it looks good on you ✨',
+    '18 and already legendary 🏆',
+    'The world is luckier with you in it 🌙',
+    'Keep being you — it works 🫶',
+    'Today is your day, always 💫',
+  ];
+  let qi=0;
+  function showQuote(){
+    if($('pwScreen')&&$('pwScreen').style.display!=='none') return;
+    const el=document.createElement('div');
+    el.textContent=quotes[qi%quotes.length]; qi++;
+    el.style.cssText=`
+      position:fixed;
+      right:20px;top:${80+Math.random()*200}px;
+      font-family:'Fraunces',serif;font-style:italic;
+      font-size:.8rem;color:rgba(200,168,248,.65);
+      background:rgba(13,10,30,.85);
+      border:1px solid rgba(200,168,248,.15);
+      border-radius:12px;padding:10px 16px;
+      pointer-events:none;z-index:600;
+      max-width:200px;line-height:1.5;
+      opacity:0;transform:translateX(20px);
+      transition:opacity .5s ease,transform .5s ease;
+    `;
+    document.body.appendChild(el);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      el.style.opacity='1';el.style.transform='translateX(0)';
+    }));
+    setTimeout(()=>{
+      el.style.opacity='0';el.style.transform='translateX(20px)';
+      setTimeout(()=>el.remove(),600);
+    },5000);
+  }
+  setTimeout(showQuote,8000);
+  setInterval(showQuote,90000);
+})();
 
 </script>
 </body>
